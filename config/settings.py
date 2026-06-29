@@ -190,7 +190,7 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 
 CELERY_BEAT_SCHEDULE = {
     "check-habits-every-minute": {
-        "task": "habits.services.check_habits",
+        "task": "habits.tasks.check_habits",
         "schedule": crontab(minute="*"),
     }
 }
