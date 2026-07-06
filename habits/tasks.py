@@ -15,7 +15,7 @@ def check_habits():
         if habit.last_sent is None:
             should_send = True
         else:
-            days = (today - habit.last_sent).days
+            days = (today - habit.last_sent.date()).days
             should_send = days >= habit.period
 
         if should_send:

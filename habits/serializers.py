@@ -3,6 +3,8 @@ from .models import Habit
 from .validators import validate
 
 class HabitSerializer(serializers.ModelSerializer):
+    time = serializers.TimeField(format="%H:%M")
+
     class Meta:
         model = Habit
         fields = '__all__'

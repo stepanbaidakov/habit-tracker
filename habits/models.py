@@ -3,12 +3,14 @@ from django.db import models
 from config.settings import AUTH_USER_MODEL
 # Create your models here.
 
+def current_time():
+    return timezone.localtime().time()
 
 class Habit(models.Model):
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="habits")
     title = models.CharField(max_length=50)
     location = models.CharField(max_length=50, blank=True, null=True)
-    time = models.TimeField(default=timezone.now)
+    time = models.TimeField(default=current_time())
     action = models.TextField()
     is_pleasant = models.BooleanField()
     connected_habit = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='habits')

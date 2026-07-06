@@ -23,6 +23,6 @@ def validate(self, attrs):
         raise serializers.ValidationError(
             "У приятной привычки не может быть вознаграждения или связанной привычки.")
 
-    if period >= 7:
+    if period and period >= 7:
         raise serializers.ValidationError("Нельзя выполнять привычку реже, чем 1 раз в 7 дней.")
     return attrs
