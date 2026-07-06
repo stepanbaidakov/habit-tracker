@@ -8,7 +8,7 @@ services:
     env_file:
       - .env
     volumes:
-      - .:/code
+      - .:/app
       - static_volume:/code/static
     ports:
       - "8000:8000"
@@ -20,11 +20,12 @@ services:
     build: .
     command: celery -A config worker -l info
     volumes:
-      - .:/code
+      - .:/app
     env_file:
       - .env
     depends_on:
       - redis
+      - db
 
   beat:
     build: .
@@ -35,6 +36,7 @@ services:
       - .env
     depends_on:
       - redis
+      - db
 
   db:
     image: postgres:16
@@ -54,6 +56,15 @@ services:
     image: redis
     expose:
       - "6379"
+
+  bot:
+    build: .
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    command: python bot.py
 
 volumes:
   postgres_data:
