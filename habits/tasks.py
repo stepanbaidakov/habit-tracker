@@ -1,7 +1,10 @@
 from django.utils import timezone
-from .models import Habit
+
 from celery import shared_task
+
+from .models import Habit
 from .services import send_message
+
 
 @shared_task
 def check_habits():

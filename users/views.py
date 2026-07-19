@@ -1,7 +1,10 @@
 from rest_framework import generics, viewsets
-from .serializers import CustomUserSerializer
+
 from .models import CustomUser
+from .serializers import CustomUserSerializer
+
 # Create your views here.
+
 
 class RegisterAPIView(generics.CreateAPIView):
     serializer_class = CustomUserSerializer

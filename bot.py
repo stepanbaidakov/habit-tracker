@@ -1,10 +1,12 @@
 import os
+
 import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 from django.contrib.auth import get_user_model
+
 from asgiref.sync import sync_to_async
 from dotenv import load_dotenv
 from telegram.ext import Application, CommandHandler

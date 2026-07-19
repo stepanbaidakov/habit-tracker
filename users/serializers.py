@@ -1,6 +1,9 @@
-from rest_framework import serializers
-from .models import CustomUser
 from django.contrib.auth import get_user_model
+
+from rest_framework import serializers
+
+from .models import CustomUser
+
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,4 +26,3 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
-
