@@ -1,7 +1,7 @@
-import requests
 import os
+
+import requests
 from dotenv import load_dotenv
-from django_celery_beat.models import PeriodicTask, IntervalSchedule
 
 load_dotenv()
 
