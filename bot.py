@@ -33,9 +33,15 @@ async def start(update, context):
     chat_id = update.effective_chat.id
 
     user = await get_user(telegram_username)
-    await save_user_chat(user, chat_id)
-
-    await update.message.reply_text("Вы успешно подписались на уведомления!")
+    if user:
+        await save_user_chat(user, chat_id)
+        await update.message.reply_text(
+            "Вы успешно подписались на уведомления!"
+        )
+    else:
+        await update.message.reply_text(
+            "Пользователь не найден"
+        )
 
 
 def main():
