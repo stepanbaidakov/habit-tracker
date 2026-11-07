@@ -22,7 +22,7 @@ def check_habits():
             should_send = days >= habit.period
 
         if should_send:
-            text = f"Вам напоминание по хорошей привычке: я буду {habit.action} в {habit.time} в {habit.location}."
+            text = f"A reminder for your good habit: I will {habit.action} at {habit.time} in {habit.location}."
             send_message(habit.user.chat_id, text)
             habit.last_sent = today
             habit.save()

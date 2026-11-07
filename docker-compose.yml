@@ -1,9 +1,10 @@
 services:
   web:
-    image: baistepan/habit-tracker:${IMAGE_TAG:-latest}
-    command: sh -c "python manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+    image: ${DOCKER_HUB_USERNAME}/habit-tracker:${IMAGE_TAG:-latest}
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/app/staticfiles
+      - media_volume:/app/media
     env_file:
       - .env
     depends_on:
@@ -12,30 +13,39 @@ services:
       redis:
         condition: service_healthy
 
+
   nginx:
-    build: ./nginx
+    image: ${DOCKER_HUB_USERNAME}/nginx:${IMAGE_TAG:-latest}
+    volumes:
+      - static_volume:/app/staticfiles:ro
+      - media_volume:/app/media:ro
     ports:
-      - "81:81"
+      - "81:80"
     depends_on:
-      - web
+      web:
+        condition: service_started
 
   worker:
-    image: baistepan/habit-tracker:${IMAGE_TAG:-latest}
+    image: ${DOCKER_HUB_USERNAME}/habit-tracker:${IMAGE_TAG:-latest}
     command: celery -A config worker -l info
     env_file:
       - .env
     depends_on:
-      - redis
-      - db
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   beat:
-    image: baistepan/habit-tracker:${IMAGE_TAG:-latest}
+    image: ${DOCKER_HUB_USERNAME}/habit-tracker:${IMAGE_TAG:-latest}
     command: celery -A config beat -l info
     env_file:
       - .env
     depends_on:
-      - redis
-      - db
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   db:
     image: postgres:16
@@ -62,7 +72,7 @@ services:
       retries: 5
 
   bot:
-    image: baistepan/habit-tracker:${IMAGE_TAG:-latest}
+    image: ${DOCKER_HUB_USERNAME}/habit-tracker:${IMAGE_TAG:-latest}
     command: python bot.py
     env_file:
       - .env
@@ -76,3 +86,4 @@ volumes:
   postgres_data:
   static_volume:
   redis_volume:
+  media_volume:

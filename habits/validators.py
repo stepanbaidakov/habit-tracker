@@ -12,20 +12,25 @@ def validate(self, attrs):
 
     if reward and connected_habit and not is_pleasant:
         raise serializers.ValidationError(
-            "Полезная привычка не должна иметь одновременно награду и связанную приятную привычку."
+            "A beneficial habit cannot have both a reward and a connected pleasant habit."
         )
 
     if not is_pleasant and duration > timedelta(seconds=120):
-        raise serializers.ValidationError("Время выполнения должно быть не больше 120 секунд.")
+        raise serializers.ValidationError("The execution time must not exceed 120 seconds.")
 
     if not is_pleasant and connected_habit and not connected_habit.is_pleasant:
         raise serializers.ValidationError(
-            "В связанные привычки могут попадать только привычки с признаком приятной привычки."
+            "Only habits marked as pleasant can be used as connected habits."
         )
 
     if is_pleasant and (reward or connected_habit):
-        raise serializers.ValidationError("У приятной привычки не может быть вознаграждения или связанной привычки.")
+        raise serializers.ValidationError(
+            "A pleasant habit cannot have a reward or a connected habit."
+        )
 
     if period and period >= 7:
-        raise serializers.ValidationError("Нельзя выполнять привычку реже, чем 1 раз в 7 дней.")
+        raise serializers.ValidationError(
+            "A habit cannot be performed less frequently than once every 7 days."
+        )
+
     return attrs
