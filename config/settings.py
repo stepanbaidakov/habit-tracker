@@ -64,12 +64,10 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-]
+CORS_ALLOWED_ORIGINS = []
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:8000",
+    "http://web:8000",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
